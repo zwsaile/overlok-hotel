@@ -1,4 +1,4 @@
-class Room {
+export class Room {
   constructor(number, type, bidet, bedSize, bedNum, cost) {
     this.number = number;
     this.type = type;
@@ -8,3 +8,5 @@ class Room {
     this.cost = cost;
   };
 };
+
+export default Room
