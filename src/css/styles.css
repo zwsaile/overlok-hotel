@@ -186,6 +186,7 @@ body {
   margin-bottom: 5vh;
   border-radius: 100px;
   width: 80%;
+  box-shadow: 0 4px 10px #595d63;
 }
 
 .booking-content {
@@ -193,6 +194,7 @@ body {
   color: #2a1236;
   border-radius: 10px;
   margin: 4px;
+  box-shadow: 0 6px 12px #595d63;
 }
 
 .future-content {
@@ -225,6 +227,7 @@ body {
   padding-top: 0.6vh;
   color: #2a1236;
   font-size: 24px;
+  box-shadow: 0 4px 10px #595d63;
 }
 
 .available-grid {
@@ -245,7 +248,7 @@ body {
   border-radius: 8px;
   height: 36vh;
   width: 18vw;
-  box-shadow: 0 4px 10px #595d63;
+  box-shadow: 0 6px 12px #595d63;
 }
 
 .available-photo {
