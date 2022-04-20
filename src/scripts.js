@@ -1,11 +1,31 @@
-// This is the JavaScript entry file - your code begins here
-// Do not delete or rename this file ********
-
-// An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
+import './images/mountain-logo.png';
+import './images/hotel-room.jpg';
 
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
-import './images/turing-logo.png'
+const mainPage = document.querySelector(".main-page");
+const mainBox = document.querySelector(".main-box");
+const mainButton = document.getElementById("main-button");
 
+const loginPage = document.querySelector(".login-page");
+const loginBox = document.querySelector(".login-box");
+const loginButton = document.getElementById("login-button");
 
-console.log('This is the JavaScript entry file - your code begins here.');
+const dashboardPage = document.querySelector(".dashboard-page");
+const dashboardBox = document.querySelector(".dashboard-box");
+
+mainButton.addEventListener("click", function() {
+  hideElement(mainPage);
+  showElement(loginPage);
+});
+loginButton.addEventListener("click", function() {
+  hideElement(loginPage);
+  showElement(dashboardPage);
+});
+
+const showElement = (element) => {
+  element.classList.remove("hidden");
+};
+
+const hideElement = (element) => {
+  element.classList.add("hidden");
+};
