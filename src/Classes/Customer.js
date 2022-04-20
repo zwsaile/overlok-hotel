@@ -1,5 +1,5 @@
-class Customer {
-  constructor(id, name, pastBookings, futureBookings, totalSpent) {
+export class Customer {
+  constructor({id: id, name: name}, pastBookings, futureBookings, totalSpent) {
     this.id = id;
     this.name = name;
     this.pastBookings = pastBookings;
@@ -9,3 +9,5 @@ class Customer {
 
 
 };
+
+export default Customer;
