@@ -16,11 +16,15 @@ const loginButton = document.getElementById("login-button");
 
 const dashboardPage = document.querySelector(".dashboard-page");
 const dashboardBox = document.querySelector(".dashboard-box");
+const futureBookings = document.querySelector(".future-grid");
+const pastBookings = document.querySelector(".past-grid");
 const newReserveButton = document.getElementById("new-reserve-button");
+const totalMoneyTag = document.querySelector(".total-money");
 
 const availableRoomsPage = document.querySelector(".available-rooms-page");
+const availableRoomsContent = document.querySelector(".available-grid");
 const backToDash = document.querySelector(".back-dash");
-
+const checkDatesButton = document.getElementById("check-button");
 const bookingDate = document.getElementById("booking-date");
 
 let currentUser;
@@ -30,6 +34,7 @@ let rooms;
 let roomClasses;
 let bookings;
 let bookingClasses;
+let hotelClass;
 
 const promise = Promise.all([data.customers, data.rooms, data.bookings])
   .then(results => {
@@ -52,12 +57,18 @@ loginButton.addEventListener("click", function() {
   showElement(dashboardPage);
   createDataClasses();
   getRandomUser();
-  console.log(currentUser);
+  renderTotalSpent();
+  renderBookings();
 });
 
 newReserveButton.addEventListener("click", function() {
   hideElement(dashboardPage);
   showElement(availableRoomsPage);
+  renderAvailableRooms();
+})
+
+checkDatesButton.addEventListener("click", function() {
+  renderAvailableRooms();
 })
 
 backToDash.addEventListener("click", function() {
@@ -78,35 +89,74 @@ const hideElement = (element) => {
 };
 
 const createDataClasses = () => {
-  customerClasses = customers.map(customer => {
-    return new Customer(customer);
-  });
   roomClasses = rooms.map(room => {
     return new Room(room.number, room.roomType, room.bidet, room.bedSize, room.numBeds, room.costPerNight);
   });
   bookingClasses = bookings.map(booking => {
-    return new Booking(booking.id, booking.userId, booking.date, booking.roomNumber);
+    return new Booking(booking.id, booking.userID, booking.date, booking.roomNumber);
+  });
+  customerClasses = customers.map(customer => {
+    return new Customer(customer, roomClasses, bookingClasses);
   });
 }
 
 const getTodaysDate = () => {
-  var today = new Date();
-  var dd = today.getDate();
-  var mm = today.getMonth()+1;
-  var yyyy = today.getFullYear();
-
-  if (dd < 10) {
-    dd = '0' + dd
-  };
-  if (mm < 10) {
-    mm = '0' + mm
-  };
-
-  today = yyyy + '-' + mm + '-' + dd;
+  const today = new Date().toLocaleDateString('en-GB').split('/').reverse().join('-');
   bookingDate.setAttribute("value", today);
   bookingDate.setAttribute("min", today);
 };
 
-const checkAvailableRooms = () => {
-  
-}
+const renderTotalSpent = () => {
+  currentUser.calculateMoneySpent();
+  totalMoneyTag.innerText = " " + (Math.round(currentUser.totalSpent * 100) / 100).toFixed(2);
+};
+
+const renderBookings = () => {
+  futureBookings.innerHTML = " ";
+  pastBookings.innerHTML = " ";
+  currentUser.calculateBookings();
+  currentUser.futureBookings.forEach(booking => {
+  futureBookings.innerHTML += `
+    <div class="future-box booking-content">
+      <p class="future-content">Room ${booking.roomNum}</p>
+      <p class="future-content">${booking.date}</p>
+    </div>
+  `;
+  });
+  currentUser.pastBookings.forEach(booking => {
+  pastBookings.innerHTML += `
+    <div class="past-box booking-content">
+      <p class="past-content">Room ${booking.roomNum}</p>
+      <p class="past-content">${booking.date}</p>
+    </div>
+  `;
+  });
+};
+
+const renderAvailableRooms = () => {
+  currentUser.getRoomsPerDay(bookingDate);
+  availableRoomsContent.innerHTML = " "
+  currentUser.availableRooms.forEach(room => {
+    availableRoomsContent.innerHTML += `
+    <div class="flip-card">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img class="available-photo" src="./images/hotel-room.jpg" alt="A view of a hotel room">
+          <p class="front-details">Room ${room.number}</p>
+        </div>
+        <div class="flip-card-back">
+          <div class="room-details">
+            <h1 class="room-type">${room.type}</h1>
+            <p class="room-description">${room.bedNum} ${room.bedSize} Sized Bed</p>
+            <p class="room-description">Bidet: ${room.bidet}</p>
+            <p class="room-description">Price Per Night: $${room.cost.toFixed(2)}</p>
+          </div>
+          <div class="btn-box" id="book-button">
+            <a href="#" class="btn">Book</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    `;
+  });
+};
