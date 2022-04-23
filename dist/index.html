@@ -37,8 +37,8 @@
         </h1>
         <form class="sign-in-form">
           <div class="login-inputs username-box">
-            <label class="form-label hidden" for="name">Username</label>
-            <input class="form-input" type="text" id="name" name="name" placeholder="Username">
+            <label class="login-form-label hidden" for="name">Username</label>
+            <input class="login-input form-input" type="text" id="name" name="name" placeholder="Username">
           </div>
           <div class="login-inputs password-box">
             <label class="form-label hidden" for="password">Password</label>
@@ -101,9 +101,23 @@
       </div>
       <article class="available-box content-box">
         <h1 class="available-title">Available Rooms</h1>
-        <form class="date-select">
-          <label for="booking-date">What day would you like to book:</label>
-          <input type="date" id="booking-date" name="date" value="" min="" max="2024-01-01">
+        <form class="booking-form">
+          <div class="booking-forms">
+            <div class="booking-date forms">
+              <label for="booking-date labels">What day would you like to book:</label>
+              <input type="date" class="inputs" id="booking-date" name="date" value="" min="" max="2024-01-01">
+            </div>
+            <div class="type-select forms">
+              <label class="room-dropdown labels" for="room-type">Choose a room type:</label>
+              <select class="inputs" name="room-type" id="room-type">
+                <option class="dropdown-all option" value="any">See All Available Rooms</option>
+                <option class="dropdown-res option" value="residential suite">Residential Suite</option>
+                <option class="dropdown-suite option" value="suite">Suite</option>
+                <option class="dropdown-jr option" value="junior suite">Junior Suite</option>
+                <option class="dropdown-single option" value="single room">Single Room</option>
+              </select>
+            </div>
+          </div>
           <div class="btn-box" id="check-button">
             <a href="#" class="btn" id="check-btn">Check</a>
           </div>
