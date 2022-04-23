@@ -1,10 +1,13 @@
 import './css/styles.css';
 import './images/mountain-logo.png';
 import './images/hotel-room.jpg';
-import { data } from "./api-calls.js"
-import { Customer } from "./Classes/Customer.js"
-import { Room } from "./Classes/Room.js"
-import { Booking } from "./Classes/Booking.js"
+import { data } from "./api-calls.js";
+import { fetchData } from "./api-calls.js";
+import { deleteData } from "./api-calls.js";
+import { postBooking } from "./api-calls.js";
+import { Customer } from "./Classes/Customer.js";
+import { Room } from "./Classes/Room.js";
+import { Booking } from "./Classes/Booking.js";
 
 const mainPage = document.querySelector(".main-page");
 const mainBox = document.querySelector(".main-box");
@@ -13,6 +16,8 @@ const mainButton = document.getElementById("main-button");
 const loginPage = document.querySelector(".login-page");
 const loginBox = document.querySelector(".login-box");
 const loginButton = document.getElementById("login-button");
+const username = document.getElementById("name");
+const password = document.getElementById("password");
 
 const dashboardPage = document.querySelector(".dashboard-page");
 const dashboardBox = document.querySelector(".dashboard-box");
@@ -28,7 +33,7 @@ const backToDash = document.querySelector(".back-dash");
 const checkDatesButton = document.getElementById("check-button");
 const bookingDate = document.getElementById("booking-date");
 
-let currentUser;
+export let currentUser;
 let customers;
 let customerClasses;
 let rooms;
@@ -54,12 +59,13 @@ mainButton.addEventListener("click", function() {
 });
 
 loginButton.addEventListener("click", function() {
-  hideElement(loginPage);
-  showElement(dashboardPage);
-  createDataClasses();
-  getRandomUser();
-  renderTotalSpent();
-  renderBookings();
+  if (logIn()) {
+    createDataClasses();
+    hideElement(loginPage);
+    showElement(dashboardPage);
+  } else {
+    return;
+  }
 });
 
 newReserveButton.addEventListener("click", function() {
@@ -75,12 +81,9 @@ checkDatesButton.addEventListener("click", function() {
 backToDash.addEventListener("click", function() {
   hideElement(availableRoomsPage);
   showElement(dashboardPage);
+  renderTotalSpent();
   renderBookings();
 })
-
-const getRandomUser = () => {
-  currentUser = customerClasses[Math.floor(Math.random() * customerClasses.length)];
-};
 
 const showElement = (element) => {
   element.classList.remove("hidden");
@@ -95,7 +98,7 @@ const createDataClasses = () => {
     return new Room(room.number, room.roomType, room.bidet, room.bedSize, room.numBeds, room.costPerNight);
   });
   bookingClasses = bookings.map(booking => {
-    return new Booking(booking.id, booking.userID, booking.date, booking.roomNumber);
+    return new Booking(booking);
   });
   customerClasses = customers.map(customer => {
     return new Customer(customer, roomClasses, bookingClasses);
@@ -113,22 +116,25 @@ const renderTotalSpent = () => {
   totalMoneyTag.innerText = " " + (Math.round(currentUser.totalSpent * 100) / 100).toFixed(2);
 };
 
-const renderBookings = () => {
+export const renderBookings = () => {
   futureBookings.innerHTML = " ";
   pastBookings.innerHTML = " ";
   currentUser.calculateBookings();
   currentUser.futureBookings.forEach(booking => {
   futureBookings.innerHTML += `
     <div class="future-box booking-content">
-      <p class="future-content">Room ${booking.roomNum}</p>
+      <p class="booking-id hidden">${booking.id}</p>
+      <p class="future-content">Room ${booking.roomNumber}</p>
       <p class="future-content">${booking.date}</p>
+      <button onclick="deleteData(${booking.id});" class="delete-btn">Delete</p>
     </div>
   `;
   });
   currentUser.pastBookings.forEach(booking => {
   pastBookings.innerHTML += `
     <div class="past-box booking-content">
-      <p class="past-content">Room ${booking.roomNum}</p>
+      <p class="booking-id hidden">${booking.id}</p>
+      <p class="past-content">Room ${booking.roomNumber}</p>
       <p class="past-content">${booking.date}</p>
     </div>
   `;
@@ -142,7 +148,7 @@ const renderAvailableRooms = (date) => {
   availableRoomsContent.innerHTML = " "
   if (currentUser.availableRooms.length === 0) {
     availableRoomsContent.innerHTML += `
-    <h1 class="error-msg">We're very sorry! It looks like there are no rooms available for this date. How about we try this again for another day?</h1>
+    <h1 class="error-msg">We're very sorry! It looks like there are no rooms available for this date. How about we try again for another day?</h1>
     `
   }
   currentUser.availableRooms.forEach(room => {
@@ -160,7 +166,7 @@ const renderAvailableRooms = (date) => {
             <p class="room-description">Bidet: ${room.bidet}</p>
             <p class="room-description">Price Per Night: $${room.cost.toFixed(2)}</p>
           </div>
-          <div onclick="postBooking(${currentUser.id}, ${dateParts[0]}, ${dateParts[1]}, ${dateParts[2]}, ${room.number});renderTotalSpent()" class="btn-box" id="book-button">
+          <div onclick="postBooking(${currentUser.id}, ${dateParts[0]}, ${dateParts[1]}, ${dateParts[2]}, ${room.number});" class="btn-box" id="book-button">
             <a href="#" class="btn">Book</a>
           </div>
         </div>
@@ -171,22 +177,29 @@ const renderAvailableRooms = (date) => {
   currentUser.getRoomsPerDay(bookingDate)
 };
 
-const postBooking = (userID, year, month, day, roomNumber) => {
-  console.log(userID, year, month, day, roomNumber);
-  fetch("http://localhost:3001/api/v1/bookings", {
-    method: "POST",
-    body: JSON.stringify({
-      userID: userID,
-      date:  `${year}/${month}/${day}`,
-      roomNumber: roomNumber
-    }),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  }).then(response => response.json())
-  .then(data => console.log(data.message))
+const logIn = () => {
+  let userChars = username.value.split("");
+  if (password.value === "overlook2021") {
+    fetchData(`customers/${userChars[8]}${userChars[9]}`).then(setUser => {
+      customerClasses.forEach(user => {
+        if (user.id === setUser.id) {
+          currentUser = user;
+        };
+      });
+    }).then(data => {
+      renderTotalSpent();
+      renderBookings();
+    })
+    return true;
+  } else {
+    return false;
+  };
 };
 
 window.postBooking = postBooking;
 
 window.renderTotalSpent = renderTotalSpent;
+
+window.renderBookings = renderBookings;
+
+window.deleteData = deleteData;

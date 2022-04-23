@@ -1,9 +1,9 @@
 export class Booking {
-  constructor(id, userID, date, roomNum) {
+  constructor({id: id, userID: userID, date: date, roomNumber: roomNumber}) {
     this.id = id;
     this.userID = userID;
     this.date = date;
-    this.roomNum = roomNum;
+    this.roomNumber = roomNumber;
   };
 
 };
