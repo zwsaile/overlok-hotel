@@ -22,8 +22,10 @@ export class Customer {
   };
 
   calculateBookings() {
+    this.futureBookings = [];
+    this.pastBookings = [];
     this.allBookings.forEach(booking => {
-      if (this.id === booking.userID && new Date(booking.date) > new Date()) {
+      if (this.id === booking.userID && new Date(booking.date) >= new Date()) {
         this.futureBookings.push(booking);
         this.futureBookings = this.futureBookings.sort((a, b) => new Date(a.date) - new Date(b.date))
         this.futureBookings.forEach(booking => {
@@ -66,6 +68,7 @@ export class Customer {
     };
     this.availableRooms = array;
   };
+
 
 };
 

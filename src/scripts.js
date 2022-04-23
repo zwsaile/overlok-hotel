@@ -65,16 +65,17 @@ loginButton.addEventListener("click", function() {
 newReserveButton.addEventListener("click", function() {
   hideElement(dashboardPage);
   showElement(availableRoomsPage);
-  renderAvailableRooms();
+  renderAvailableRooms(bookingDate.value.split("-").join("/"));
 })
 
 checkDatesButton.addEventListener("click", function() {
-  renderAvailableRooms();
+  renderAvailableRooms(bookingDate.value.split("-").join("/"));
 })
 
 backToDash.addEventListener("click", function() {
   hideElement(availableRoomsPage);
   showElement(dashboardPage);
+  renderBookings();
 })
 
 const getRandomUser = () => {
@@ -134,11 +135,16 @@ const renderBookings = () => {
   });
 };
 
-const renderAvailableRooms = () => {
+const renderAvailableRooms = (date) => {
+  const dateParts = bookingDate.value.split("-");
   currentUser.getRoomsPerDay(bookingDate);
-  console.log(currentUser.availableRooms);
   currentUser.getRoomsByType(roomType);
   availableRoomsContent.innerHTML = " "
+  if (currentUser.availableRooms.length === 0) {
+    availableRoomsContent.innerHTML += `
+    <h1 class="error-msg">We're very sorry! It looks like there are no rooms available for this date. How about we try this again for another day?</h1>
+    `
+  }
   currentUser.availableRooms.forEach(room => {
     availableRoomsContent.innerHTML += `
     <div class="flip-card">
@@ -154,7 +160,7 @@ const renderAvailableRooms = () => {
             <p class="room-description">Bidet: ${room.bidet}</p>
             <p class="room-description">Price Per Night: $${room.cost.toFixed(2)}</p>
           </div>
-          <div class="btn-box" id="book-button">
+          <div onclick="postBooking(${currentUser.id}, ${dateParts[0]}, ${dateParts[1]}, ${dateParts[2]}, ${room.number});renderTotalSpent()" class="btn-box" id="book-button">
             <a href="#" class="btn">Book</a>
           </div>
         </div>
@@ -164,3 +170,23 @@ const renderAvailableRooms = () => {
   });
   currentUser.getRoomsPerDay(bookingDate)
 };
+
+const postBooking = (userID, year, month, day, roomNumber) => {
+  console.log(userID, year, month, day, roomNumber);
+  fetch("http://localhost:3001/api/v1/bookings", {
+    method: "POST",
+    body: JSON.stringify({
+      userID: userID,
+      date:  `${year}/${month}/${day}`,
+      roomNumber: roomNumber
+    }),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }).then(response => response.json())
+  .then(data => console.log(data.message))
+};
+
+window.postBooking = postBooking;
+
+window.renderTotalSpent = renderTotalSpent;
