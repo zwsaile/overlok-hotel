@@ -16,9 +16,10 @@ const loginButton = document.getElementById("login-button");
 
 const dashboardPage = document.querySelector(".dashboard-page");
 const dashboardBox = document.querySelector(".dashboard-box");
+const newReserveButton = document.getElementById("new-reserve-button");
+const roomType = document.getElementById("room-type");
 const futureBookings = document.querySelector(".future-grid");
 const pastBookings = document.querySelector(".past-grid");
-const newReserveButton = document.getElementById("new-reserve-button");
 const totalMoneyTag = document.querySelector(".total-money");
 
 const availableRoomsPage = document.querySelector(".available-rooms-page");
@@ -135,6 +136,8 @@ const renderBookings = () => {
 
 const renderAvailableRooms = () => {
   currentUser.getRoomsPerDay(bookingDate);
+  console.log(currentUser.availableRooms);
+  currentUser.getRoomsByType(roomType);
   availableRoomsContent.innerHTML = " "
   currentUser.availableRooms.forEach(room => {
     availableRoomsContent.innerHTML += `
@@ -159,4 +162,5 @@ const renderAvailableRooms = () => {
     </div>
     `;
   });
+  currentUser.getRoomsPerDay(bookingDate)
 };
