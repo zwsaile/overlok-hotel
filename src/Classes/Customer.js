@@ -11,14 +11,16 @@ export class Customer {
     this.totalSpent = 0;
   };
 
-  calculateMoneySpent() {
+  calculateMoneySpent(value) {
+    let num = 0
     this.allBookings.forEach(booking => {
       this.allRooms.forEach(room => {
-        if (this.id === booking.userID && room.number ===   booking.roomNum) {
-          this.totalSpent += room.cost;
+        if (this.id === booking.userID && room.number === booking.roomNumber) {
+          num += room.cost;
         };
       });
     });
+    this.totalSpent = num
   };
 
   calculateBookings() {
@@ -68,7 +70,6 @@ export class Customer {
     };
     this.availableRooms = array;
   };
-
 
 };
 
