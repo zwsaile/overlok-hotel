@@ -11,7 +11,7 @@ export class Customer {
     this.totalSpent = 0;
   };
 
-  calculateMoneySpent(value) {
+  calculateMoneySpent() {
     let num = 0
     this.allBookings.forEach(booking => {
       this.allRooms.forEach(room => {
@@ -46,11 +46,17 @@ export class Customer {
   getRoomsPerDay(date) {
     this.unavailableRooms = [];
     this.availableRooms = [];
-    this.unavailableRooms = this.allBookings.filter(booking => booking.date === date.value.split("-").join("/"));
+    let actuallyToday = new Date(date)
+    actuallyToday.setDate(actuallyToday.getDate() + 1)
+    this.allBookings.forEach(booking => {
+      if (new Date(booking.date).toLocaleDateString('en-US') === new Date(actuallyToday).toLocaleDateString('en-US')) {
+        this.unavailableRooms.push(booking)
+      };
+    });
     this.allRooms.forEach(room => {
       this.availableRooms.push(room);
       this.unavailableRooms.forEach(unRoom => {
-        if (room.number === unRoom.roomNum) {
+        if (room.number === unRoom.roomNumber) {
           this.availableRooms.splice(this.availableRooms.indexOf(room), 1)
         };
       });
@@ -59,11 +65,11 @@ export class Customer {
 
   getRoomsByType(input) {
     let array = []
-    if (input.value === "any") {
+    if (input === "any") {
       return;
     } else {
       this.availableRooms.forEach(room => {
-        if (input.value === room.type) {
+        if (input === room.type) {
           array.push(room);
         }
       });
