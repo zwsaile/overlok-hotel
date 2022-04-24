@@ -11,7 +11,9 @@ const deleteData = (data) => fetch(`http://localhost:3001/api/v1/bookings/${data
           currentUser.allBookings.splice(currentUser.allBookings.indexOf(deletion), 1)
         };
       });
-      renderBookings()
+      renderBookings();
+      renderTotalSpent();
+      console.log("Booking removed successfully")
   }).catch((error) => console.log("Booking not removed successfully"))
 
 const postBooking = (userID, year, month, day, roomNumber) => {
@@ -28,8 +30,10 @@ const postBooking = (userID, year, month, day, roomNumber) => {
   }).then(response => response.json()).then(data => {
     let userBooking = new Booking(data.newBooking)
     currentUser.allBookings.push(userBooking)
-    console.log(userBooking)
-  });
+    currentUser.availableRooms.splice(currentUser.availableRooms.indexOf(userBooking), 1)
+    renderAvailableRooms()
+    console.log("Booking added successfully")
+  }).catch(error => console.log("Booking not added successfully"))
 };
 
 const data = {
