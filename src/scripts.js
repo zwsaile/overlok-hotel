@@ -18,6 +18,7 @@ const loginBox = document.querySelector(".login-box");
 const loginButton = document.getElementById("login-button");
 const username = document.getElementById("name");
 const password = document.getElementById("password");
+const wrongPassword = document.querySelector(".wrong-info-msg")
 
 const dashboardPage = document.querySelector(".dashboard-page");
 const dashboardBox = document.querySelector(".dashboard-box");
@@ -197,6 +198,10 @@ const logIn = () => {
     })
     return true;
   } else {
+    showElement(wrongPassword)
+    setTimeout(() => {hideElement(wrongPassword)}, 3000)
+    username.value = "";
+    password.value = "";
     return false;
   };
 };
