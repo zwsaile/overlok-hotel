@@ -129,7 +129,9 @@ export const renderBookings = () => {
       <p class="booking-id hidden">${booking.id}</p>
       <p class="future-content">Room ${booking.roomNumber}</p>
       <p class="future-content">${booking.date}</p>
-      <button onclick="deleteData(${booking.id});" class="delete-btn">Cancel Reservation</button>
+      <div onclick="deleteData(${booking.id})" class="delete-btn btn-box" id="delete-button">
+        <a href="#" class="btn" id="delete-btn">Cancel</a>
+      </div>
     </div>
   `;
   });
@@ -139,7 +141,6 @@ export const renderBookings = () => {
       <p class="booking-id hidden">${booking.id}</p>
       <p class="past-content">Room ${booking.roomNumber}</p>
       <p class="past-content">${booking.date}</p>
-      <button onclick="deleteData(${booking.id});" class="delete-btn">Cancel Reservation</button>
     </div>
   `;
   });
@@ -160,7 +161,7 @@ const renderAvailableRooms = () => {
       <div class="flip-card">
         <div class="flip-card-inner">
           <div class="flip-card-front">
-            <img class="available-photo" src="./images/hotel-room.jpg" alt="A view of a   hotel room">
+            <img class="available-photo" src="./images/hotel-room.jpg" alt="A view from the door of a hotel room looking at a hotel bed">
             <p class="front-details">Room ${room.number}</p>
           </div>
           <div class="flip-card-back">

@@ -222,13 +222,13 @@ body {
   flex-direction: column;
   justify-content: space-around;
   align-items: flex-start;
-  background-color: white;
+  background-image: linear-gradient(to left, rgba(255, 255, 255, .7), rgba(234, 220, 235, .7)), url(../images/purple-room.jpg);
+  background-size: cover;
   color: #3a1a4a;
   border-radius: 10px;
   padding-left: 1vw;
   margin: 5px;
   box-shadow: 0 6px 12px #595d63;
-  cursor: pointer;
 }
 
 .future-box {
@@ -349,7 +349,6 @@ body {
   height: 32vh;
   width: 16vw;
   box-shadow: 0 6px 12px #595d63;
-  cursor: pointer;
 }
 
 .available-photo {
@@ -357,6 +356,25 @@ body {
   height: auto;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
+}
+
+#delete-button {
+  transform: scale(0.6);
+  margin-left: -3vw;
+  cursor: pointer;
+}
+
+#delete-btn {
+  background-color: #8d709e;
+  color: white;
+}
+
+#delete-btn:hover {
+  box-shadow: 0 5px 10px #595d63;
+}
+
+#delete-btn:active {
+  box-shadow: 0 4px 8px #595d63;
 }
 
 /* Flip Card */
