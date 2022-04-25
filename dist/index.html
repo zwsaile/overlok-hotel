@@ -4,37 +4,34 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Overlook Hotel has been owned and operated by Richard Whitman since 1964 and has provided world class accommodations to thousands of travelers from across the world.">
   <title>The Overlook Hotel</title>
 </head>
 <body>
   <main>
-
-
     <section class="main-page general">
       <div class="logo-box">
-        <img src="./images/mountain-logo.png" class="logo" alt="Logo">
+        <img src="./images/mountain-logo.png" class="logo" alt="A logo of a single line crown with three points on the top">
       </div>
       <article class="main-box content-box">
-        <h1 class="heading-primary">
-          <span class="heading-primary-main">The Overlook</span>
-          <span class="heading-primary-sub">Live Luxuriously</span>
-        </h1>
+        <div class="heading-primary">
+          <h1 class="heading-primary-main">The Overlook</h1>
+          <h2 class="heading-primary-sub">Live Luxuriously</h2>
+        </div>
         <div class="btn-box" id="main-button">
           <a href="#" class="btn">Sign In</a>
         </div>
       </article>
     </section>
-
-
     <section class="login-page general hidden">
       <div class="logo-box">
-        <img src="./images/mountain-logo.png" class="logo" alt="Logo">
-        <p class="company-name">The Overlook Hotel</p>
+        <img src="./images/mountain-logo.png" class="logo" alt="A logo of a single line crown with three points on the top">
+        <h2 class="company-name">The Overlook Hotel</h2>
       </div>
       <article class="login-box content-box">
-        <h1 class="heading-primary">
-          <span class="heading-primary-sub">Please sign in</span>
-        </h1>
+        <div class="heading-primary">
+          <h1 class="heading-primary-sub">Please sign in</h1>
+        </div>
         <form class="sign-in-form">
           <div class="login-inputs username-box">
             <label class="login-form-label hidden" for="name">Username</label>
@@ -50,12 +47,10 @@
         </div>
       </article>
     </section>
-
-
     <section class="dashboard-page general hidden">
       <div class="logo-box">
-        <img src="./images/mountain-logo.png" class="logo" alt="Logo">
-        <p class="company-name">The Overlook Hotel</p>
+        <img src="./images/mountain-logo.png" class="logo" alt="A logo of a single line crown with three points on the top">
+        <h2 class="company-name">The Overlook Hotel</h2>
       </div>
       <div class="amount-spent">
         <p class="total-text">Total Spent:</p>
@@ -79,22 +74,16 @@
           <section class="dashboard-past-content dash-content">
             <h2 class="booking-title">Past Reservations</h2>
             <div class="dash-items-grid past-grid">
-              <div class="past-box booking-content">
-                <p class="past-content">Content</p>
-                <p class="past-content">Content</p>
-                <p class="past-content">Content</p>
-              </div>
+            <!-- Bookings will be generated here -->
             </div>
           </section>
         </div>
       </article>
     </section>
-
-
     <section class="available-rooms-page general hidden">
       <div class="logo-box">
-        <img src="./images/mountain-logo.png" class="logo" alt="Logo">
-        <p class="company-name">The Overlook Hotel</p>
+        <img src="./images/mountain-logo.png" class="logo" alt="A logo of a single line crown with three points on the top">
+        <h2 class="company-name">The Overlook Hotel</h2>
       </div>
       <div class="back-dash">
         <p class="total-text">Back to Dashboard</p>
@@ -104,7 +93,7 @@
         <form class="booking-form">
           <div class="booking-forms">
             <div class="booking-date forms">
-              <label for="booking-date labels">What day would you like to book:</label>
+              <label for="booking-date">What day would you like to book:</label>
               <input type="date" class="inputs" id="booking-date" name="date" value="" min="" max="2024-01-01">
             </div>
             <div class="type-select forms">
@@ -127,8 +116,6 @@
         </div>
       </article>
     </section>
-
-
   </main>
   <script src="bundle.js"></script>
 </body>
