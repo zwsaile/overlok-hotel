@@ -49,6 +49,8 @@ Complete with a dashboard where each user can see all bookings, past and future,
 
 ## Instructions
 
+0. Running `export NODE_OPTIONS=--openssl-legacy-provider` in the CLI is required to run app locally
+
 1. Press the sign in button to be taken to the sign in page
 
 2. Enter your username (customer + any number 01-50) and password (overlook2021)
