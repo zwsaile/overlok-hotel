@@ -125,7 +125,7 @@ describe('Customer', () => {
     expect(Customer).to.be.a('function');
   });
 
-  it('should be able to take different users', () => {
+  it('should be able to log in as different users', () => {
     expect(customer.id).to.equal(1);
     customer = new Customer(customers[1], rooms, bookings);
     expect(customer.id).to.equal(2);
@@ -133,10 +133,26 @@ describe('Customer', () => {
 
   it('should be able to store rooms', () => {
     expect(customer.allRooms).to.have.lengthOf(6);
+    expect(customer.allRooms[2]).to.deep.equal(
+    {
+      "number": 3,
+      "type": "single room",
+      "bidet": false,
+      "bedSize": "king",
+      "numBeds": 1,
+      "cost": 491.14
+    });
   });
 
   it('should be able to store bookings', () => {
     expect(customer.allBookings).to.have.lengthOf(6);
+    expect(customer.allBookings[4]).to.deep.equal(
+    {
+      "id": "5fwrgu4i7k55hl6t5",
+      "userID": 1,
+      "date": "2022/06/24",
+      "roomNumber": 3
+    });
   });
 
   it('should be able to count how much money has been spent', () => {
@@ -144,16 +160,93 @@ describe('Customer', () => {
     expect(customer.totalSpent).to.equal(1459.6599999999999);
   });
 
-  it('should be able to keep track all past and future bookings', () => {
+  it('should be able to keep track all past bookings', () => {
+    customer.calculateBookings();
+    expect(customer.pastBookings).to.have.lengthOf(1);
+    expect(customer.pastBookings).to.deep.equal([
+      {
+        "id": "5fwrgu4i7k55hl6sz",
+        "userID": 1,
+        "date": "4/22/2022",
+        "roomNumber": 3
+      }
+    ]);
+  });
+
+  it('should be able to keep track all future bookings', () => {
     customer.calculateBookings();
     expect(customer.futureBookings).to.have.lengthOf(2);
-    expect(customer.pastBookings).to.have.lengthOf(1);
+    expect(customer.futureBookings).to.deep.equal([
+      {
+        "id": "5fwrgu4i7k55hl6t6",
+        "userID": 1,
+        "date": "5/10/2022",
+        "roomNumber": 2
+      },
+      {
+        "id": "5fwrgu4i7k55hl6t5",
+        "userID": 1,
+        "date": "6/24/2022",
+        "roomNumber": 3
+      }
+    ])
   });
+
 
   it('should be able to sort available rooms by date', () => {
     let date = new Date();
     customer.getRoomsPerDay(date);
     expect(customer.availableRooms).to.have.lengthOf(6);
+    expect(customer.availableRooms).to.deep.equal([
+      {
+        "number": 1,
+        "type": "residential suite",
+        "bidet": true,
+        "bedSize": "queen",
+        "numBeds": 1,
+        "cost": 358.4
+      },
+      {
+        "number": 2,
+        "type": "suite",
+        "bidet": false,
+        "bedSize": "full",
+        "numBeds": 2,
+        "cost": 477.38
+      },
+      {
+        "number": 3,
+        "type": "single room",
+        "bidet": false,
+        "bedSize": "king",
+        "numBeds": 1,
+        "cost": 491.14
+      },
+      {
+        "number": 4,
+        "type": "suite",
+        "bidet": true,
+        "bedSize": "queen",
+        "numBeds": 2,
+        "cost": 458.4
+      },
+      {
+        "number": 5,
+        "type": "junior suite",
+        "bidet": true,
+        "bedSize": "full",
+        "numBeds": 1,
+        "cost": 311.38
+      },
+      {
+        "number": 6,
+        "type": "single room",
+        "bidet": false,
+        "bedSize": "king",
+        "numBeds": 1,
+        "cost": 401.14
+      }
+    ])
   });
 
   it('should be able to sort rooms by room type', () => {
@@ -161,6 +254,23 @@ describe('Customer', () => {
     customer.getRoomsPerDay(date);
     customer.getRoomsByType("suite")
     expect(customer.availableRooms).to.have.lengthOf(2);
+    expect(customer.availableRooms).to.deep.equal([
+      {
+        "number": 2,
+        "type": "suite",
+        "bidet": false,
+        "bedSize": "full",
+        "numBeds": 2,
+        "cost": 477.38
+      },
+      {
+        "number": 4,
+        "type": "suite",
+        "bidet": true,
+        "bedSize": "queen",
+        "numBeds": 2,
+        "cost": 458.4
+      }
+    ]);
   });
-
 });

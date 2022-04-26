@@ -10,18 +10,15 @@ import { Room } from "./Classes/Room.js";
 import { Booking } from "./Classes/Booking.js";
 
 const mainPage = document.querySelector(".main-page");
-const mainBox = document.querySelector(".main-box");
 const mainButton = document.getElementById("main-button");
 
 const loginPage = document.querySelector(".login-page");
-const loginBox = document.querySelector(".login-box");
 const loginButton = document.getElementById("login-button");
 const username = document.getElementById("name");
 const password = document.getElementById("password");
 const wrongPassword = document.querySelector(".wrong-info-msg")
 
 const dashboardPage = document.querySelector(".dashboard-page");
-const dashboardBox = document.querySelector(".dashboard-box");
 const newReserveButton = document.getElementById("new-reserve-button");
 const roomType = document.getElementById("room-type");
 const futureBookings = document.querySelector(".future-grid");
@@ -42,7 +39,7 @@ let customers;
 let rooms;
 let bookings;
 
-const promise = Promise.all([data.customers, data.rooms, data.bookings])
+Promise.all([data.customers, data.rooms, data.bookings])
   .then(results => {
     customers = results[0].customers;
     rooms = results[1].rooms;
